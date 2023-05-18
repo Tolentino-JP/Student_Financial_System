@@ -22,19 +22,19 @@ public class Student_Financial_System{
         student.course[0] = c;
 
         System.out.print("\nInput how much Tuition Fee in "+ student.course[0] +": ₱ ");
-        int money = pasok.nextInt();
+        double money = pasok.nextDouble();
         student.tuition[0] = money;
 
         System.out.print("Input how much Registration and Miscellaneous Fee in "+ student.course[0] +": ₱ ");
-        money = pasok.nextInt();
+        money = pasok.nextDouble();
         student.misc_fee[0] = money;
 
         System.out.print("Input how much Non-School Fees: ₱ ");
-        money = pasok.nextInt();
+        money = pasok.nextDouble();
         student.non_school[0] = money;
 
         System.out.print("Input how much you have already paid: ₱");
-        money = pasok.nextInt();
+        money = pasok.nextDouble();
         student.already_paid[0] = money;
 
         student.total_fees[0] = student.tuition[0] + student.misc_fee[0] + student.non_school[0];
@@ -89,6 +89,8 @@ public class Student_Financial_System{
                 match = 2;
                 break;
             case 5:
+                scholarship();
+                choice();
                 break;
         }
         
@@ -96,7 +98,7 @@ public class Student_Financial_System{
 
     public static void balance(){
         char main_menu;
-        int balance = student.total_fees[0] - student.already_paid[0];
+        double balance = student.total_fees[0] - student.already_paid[0];
         System.out.println("You want to check Balance.");
         System.out.println("Your Balance is ₱"+ balance);
 
@@ -110,14 +112,21 @@ public class Student_Financial_System{
     }// end balance
 
     public static void pay(){
-        int money = 0;
+        double money = 0;
+        char main_menu;
         System.out.println("You want to pay School Fees...");
         System.out.println("How much you want to pay? ");
         System.out.print("Input ammount: ₱ ");
-        money = pasok.nextInt();
+        money = pasok.nextDouble();
         student.already_paid[0] += money;
-        int balance = student.total_fees[0] - student.already_paid[0];
+        double balance = student.total_fees[0] - student.already_paid[0];
         System.out.println("Updated Balance: "+ balance);
+
+        do{
+            System.out.print("\n\nDo you want to go back to main menu (y/n)? ");
+            main_menu = pasok.next().charAt(0);
+        }while(main_menu != 'y');
+        System.out.print("\033[H\033[2J");
         
     }
 
@@ -200,7 +209,7 @@ public class Student_Financial_System{
         System.out.print("\033[H\033[2J");
     }// end subject
 
-    public static void sholarship(){
+    public static void scholarship(){
         System.out.println(" __________________________________________________");
         System.out.println("|                                                  |");
         System.out.println("|     Scholarships:                                |");
@@ -226,6 +235,11 @@ public class Student_Financial_System{
             System.out.println("           •100% discount on registration and miscellaneous fees");
             System.out.println("           •P2,500.00 stipend/month");
             System.out.println("           •P2,000.00 book allowance/semester");
+
+            student.tuition[0] -= student.tuition[0]*1;
+            student.misc_fee[0] -= student.misc_fee[0] * 1;
+            student.total_fees[0] = student.tuition[0] + student.misc_fee[0] + student.non_school[0];
+
         }else if(student.s_scholarship[0] == 2){
             System.out.println("You have Apolinario Mabini Scholarship.");
             System.out.println("Apolinario Mabini: ");
@@ -233,27 +247,56 @@ public class Student_Financial_System{
             System.out.println("                  •100% discount on registration and miscellaneous fees");
             System.out.println("                  •P1,000.00 stipend/month");
             System.out.println("                  •P1,000.00 book allowance/semester");
+
+            student.tuition[0] -= student.tuition[0]*1;
+            student.misc_fee[0] -= student.misc_fee[0] * 1;
+            student.total_fees[0] = student.tuition[0] + student.misc_fee[0] + student.non_school[0];
+
         }else if(student.s_scholarship[0] == 3){
             System.out.println("You have Emilio Aguinaldo Scholarship.");
             System.out.println("Emilio Aguinaldo: ");
             System.out.println("                 •100% discount on tuition fees");
             System.out.println("                 •100% discount on registration and miscellaneous fees");
+
+            student.tuition[0] -= student.tuition[0]*1;
+            student.misc_fee[0] -= student.misc_fee[0] * 1;
+            student.total_fees[0] = student.tuition[0] + student.misc_fee[0] + student.non_school[0];
+
         }else if(student.s_scholarship[0] == 4){
             System.out.println("You have Manuel Quezon Scholarship.");
             System.out.println("Manuel Quezon: ");
             System.out.println("              •100% discount on tuition fees");
-            System.out.println("              •100% discount on registration and miscellaneous fees");            
+            System.out.println("              •50% discount on registration and miscellaneous fees");
+            
+            student.tuition[0] -= student.tuition[0]*1;
+            student.misc_fee[0] -= student.misc_fee[0] * 0.5;
+            student.total_fees[0] = student.tuition[0] + student.misc_fee[0] + student.non_school[0];
+            
         }else if(student.s_scholarship[0] == 6){
             System.out.println("You have 50TAG Scholarship.");
             System.out.println("50TAG: ");
-            System.out.println("      •100% discount on tuition fees"); 
-        }else if(student.s_scholarship[0] == 5){
-            System.out.println("You have 50TAG Scholarship.");
-            System.out.println("50TAG: ");
-            System.out.println("      •50% discount on tuition fees");
-        }else if(student.s_scholarship[0] == 7){
+            System.out.println("      •50% discount on tuition fees"); 
+
+            student.tuition[0] -= student.tuition[0]*0.5;
+            student.total_fees[0] = student.tuition[0] + student.misc_fee[0] + student.non_school[0];
             
+        }else if(student.s_scholarship[0] == 5){
+            System.out.println("You have 100TAG Scholarship.");
+            System.out.println("100TAG: ");
+            System.out.println("      •100% discount on tuition fees");
+
+            student.tuition[0] -= student.tuition[0]*1;
+            student.total_fees[0] = student.tuition[0] + student.misc_fee[0] + student.non_school[0];
+            
+        }else if(student.s_scholarship[0] == 7){
+            System.out.println("You do not have any Scholarships...");
         }
+        char main_menu;
+        do{
+            System.out.print("\n\nDo you want to go back to main menu (y/n)? ");
+            main_menu = pasok.next().charAt(0);
+        }while(main_menu != 'y');
+        System.out.print("\033[H\033[2J");
 
     }
 
@@ -281,11 +324,11 @@ class financial{
     public String[] id = new String[1];
     public String[] name = new String[1];
     public String[] course = new String[1];
-    public String[] s_scholarship = new String[1];
-    public int[] tuition = new int[1];
-    public int[] misc_fee = new int[1];
-    public int[] non_school = new int[1];
-    public int[] total_fees = new int[1];
-    public int[] already_paid = new int[1];
+    public int[] s_scholarship = new int[1];
+    public double[] tuition = new double[1];
+    public double[] misc_fee = new double[1];
+    public double[] non_school = new double[1];
+    public double[] total_fees = new double[1];
+    public double[] already_paid = new double[1];
     
 }// end financial
