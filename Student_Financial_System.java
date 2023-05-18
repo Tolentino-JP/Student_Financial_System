@@ -25,7 +25,7 @@ public class Student_Financial_System{
         int money = pasok.nextInt();
         student.tuition[0] = money;
 
-        System.out.print("Input how much Miscellaneous Fee in "+ student.course[0] +": ₱ ");
+        System.out.print("Input how much Registration and Miscellaneous Fee in "+ student.course[0] +": ₱ ");
         money = pasok.nextInt();
         student.misc_fee[0] = money;
 
@@ -103,7 +103,7 @@ public class Student_Financial_System{
         do{
             System.out.print("\n\nDo you want to go back to main menu (y/n)? ");
             main_menu = pasok.next().charAt(0);
-        }while(main_menu == 'n');
+        }while(main_menu != 'y');
         System.out.print("\033[H\033[2J");
        
         
@@ -196,7 +196,7 @@ public class Student_Financial_System{
         do{
             System.out.print("\n\nDo you want to go back to main menu (y/n)? ");
             main_menu = pasok.next().charAt(0);
-        }while(main_menu == 'n');
+        }while(main_menu != 'y');
         System.out.print("\033[H\033[2J");
     }// end subject
 
@@ -216,10 +216,42 @@ public class Student_Financial_System{
         System.out.println("|__________________________________________________|");
 
         System.out.print("What is  you scholarship?? ");
-        String scan = pasok.nextLine();
+        int scan = pasok.nextInt();
         student.s_scholarship[0] = scan;
 
-        if(student.s_scholarship[0].equals("Jose Rizal")){
+        if(student.s_scholarship[0] == 1){
+            System.out.println("You have Jose Rizal Scholarship.");
+            System.out.println("Jose Rizal: ");
+            System.out.println("           •100% discount on tuition fees");
+            System.out.println("           •100% discount on registration and miscellaneous fees");
+            System.out.println("           •P2,500.00 stipend/month");
+            System.out.println("           •P2,000.00 book allowance/semester");
+        }else if(student.s_scholarship[0] == 2){
+            System.out.println("You have Apolinario Mabini Scholarship.");
+            System.out.println("Apolinario Mabini: ");
+            System.out.println("                  •100% discount on tuition fees");
+            System.out.println("                  •100% discount on registration and miscellaneous fees");
+            System.out.println("                  •P1,000.00 stipend/month");
+            System.out.println("                  •P1,000.00 book allowance/semester");
+        }else if(student.s_scholarship[0] == 3){
+            System.out.println("You have Emilio Aguinaldo Scholarship.");
+            System.out.println("Emilio Aguinaldo: ");
+            System.out.println("                 •100% discount on tuition fees");
+            System.out.println("                 •100% discount on registration and miscellaneous fees");
+        }else if(student.s_scholarship[0] == 4){
+            System.out.println("You have Manuel Quezon Scholarship.");
+            System.out.println("Manuel Quezon: ");
+            System.out.println("              •100% discount on tuition fees");
+            System.out.println("              •100% discount on registration and miscellaneous fees");            
+        }else if(student.s_scholarship[0] == 6){
+            System.out.println("You have 50TAG Scholarship.");
+            System.out.println("50TAG: ");
+            System.out.println("      •100% discount on tuition fees"); 
+        }else if(student.s_scholarship[0] == 5){
+            System.out.println("You have 50TAG Scholarship.");
+            System.out.println("50TAG: ");
+            System.out.println("      •50% discount on tuition fees");
+        }else if(student.s_scholarship[0] == 7){
             
         }
 
