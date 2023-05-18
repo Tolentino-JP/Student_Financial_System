@@ -1,10 +1,12 @@
 //import java.io.*;
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class Student_Financial_System{
-    static Scanner pasok = new Scanner(System.in);
-    static financial student = new financial();
-    static int match;
+    public static DecimalFormat df = new DecimalFormat("0.00");
+    public static Scanner pasok = new Scanner(System.in);
+    public static financial student = new financial();
+    public static int match;
     
     public static void info(){
         String c;
@@ -49,8 +51,8 @@ public class Student_Financial_System{
         System.out.println("     Student Name: "+ student.name[0]                );
         System.out.println("     Course: "+ student.course[0]                    );
         System.out.println("                                                    ");
-        System.out.println("     Total Fees: ₱"+ student.total_fees[0]           );
-        System.out.println("     Paid: ₱"+ student.already_paid[0]               );
+        System.out.println("     Total Fees: ₱"+ df.format(student.total_fees[0])           );
+        System.out.println("     Paid: ₱"+ df.format(student.already_paid[0])               );
         System.out.println("                                                    ");
         System.out.println(" ___________________________________________________");
         System.out.println(" ___________________________________________________");
@@ -100,7 +102,7 @@ public class Student_Financial_System{
         char main_menu;
         double balance = student.total_fees[0] - student.already_paid[0];
         System.out.println("You want to check Balance.");
-        System.out.println("Your Balance is ₱"+ balance);
+        System.out.println("Your Balance is ₱"+ df.format(balance));
 
         do{
             System.out.print("\n\nDo you want to go back to main menu (y/n)? ");
@@ -120,10 +122,10 @@ public class Student_Financial_System{
         money = pasok.nextDouble();
         student.already_paid[0] += money;
         double balance = student.total_fees[0] - student.already_paid[0];
-        System.out.println("Updated Balance: "+ balance);
+        System.out.println("Updated Balance: "+ df.format(balance) +"\n");
 
         do{
-            System.out.print("\n\nDo you want to go back to main menu (y/n)? ");
+            System.out.print("Do you want to go back to main menu (y/n)? ");
             main_menu = pasok.next().charAt(0);
         }while(main_menu != 'y');
         System.out.print("\033[H\033[2J");
