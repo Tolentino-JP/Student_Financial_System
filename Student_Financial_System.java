@@ -1,58 +1,87 @@
 //import java.io.*;
-import java.text.DecimalFormat;
 import java.util.*;
 
 public class Student_Financial_System{
-    public static DecimalFormat df = new DecimalFormat("0.00");
     public static Scanner pasok = new Scanner(System.in);
     public static financial student = new financial();
-    public static int match;
+    public static int match, success=-1;
     
-    public static void info(){
+
+    public static void register(){
         String c;
+        int times = 0;
         System.out.print("Input your Student ID: ");
+        //pasok.nextLine();
         c = pasok.nextLine();
-        student.id[0] = c;
+        student.id.add(times, c);
 
         System.out.print("Input your Name: ");
         c = pasok.nextLine();
-        student.name[0] = c;
+        student.name.add(times, c);
 
         System.out.println("\nCourses: BSTM, BSE, BSP, BSCS, BSEMC, BSIT");
         System.out.print("\nInput your Course: ");
         c = pasok.nextLine();
-        student.course[0] = c;
+        student.course.add(times, c);
 
-        System.out.print("\nInput how much Tuition Fee in "+ student.course[0] +": ₱ ");
-        double money = pasok.nextDouble();
-        student.tuition[0] = money;
+        System.out.print("\nInput how much Tuition Fee in "+ student.course.get(times) +": ₱ ");
+        int money = pasok.nextInt();
+        student.tuition.add(times, money);
 
-        System.out.print("Input how much Registration and Miscellaneous Fee in "+ student.course[0] +": ₱ ");
-        money = pasok.nextDouble();
-        student.misc_fee[0] = money;
+        System.out.print("Input how much Registration and Miscellaneous Fee in "+ student.course.get(times) +": ₱ ");
+        money = pasok.nextInt();
+        student.misc_fee.add(times, money);
 
-        System.out.print("Input how much Non-School Fees: ₱ ");
-        money = pasok.nextDouble();
-        student.non_school[0] = money;
+        System.out.print("Input how much Non-School Fees in "+ student.course.get(times) +": ₱ ");
+        money = pasok.nextInt();
+        student.non_school.add(times, money);
 
-        System.out.print("Input how much you have already paid: ₱");
-        money = pasok.nextDouble();
-        student.already_paid[0] = money;
+        System.out.print("Input how much you have already paid: ₱ ");
+        money = pasok.nextInt();
+        student.already_paid.add(times, money);
 
-        student.total_fees[0] = student.tuition[0] + student.misc_fee[0] + student.non_school[0];
+        student.total_fees.add(times, student.tuition.get(times) + student.misc_fee.get(times) + student.non_school.get(times));
         System.out.print("\033[H\033[2J");
 
+        
+
+        times++;
+
     }// end info
+
+    public static void login(){
+        System.out.print("Input your Student ID: ");
+        String c = pasok.nextLine();
+        for(int i=0;i<student.id.size();i++){
+            if(student.id.get(i).equals(c)){
+                success = i;
+                System.out.println("You have LogIn successfully.\n");
+
+                choice();
+                break;
+            }
+        }
+        if(success == -1){
+            char main_menu;
+            System.out.println("No records of \""+ c +"\" in the system....\n");
+            do{
+                System.out.print("Do you want to go back to main menu (y/n)? ");
+                main_menu = pasok.next().charAt(0);
+            }while(main_menu != 'y');
+        }
+        System.out.print("\033[H\033[2J");
+
+    }
 
     public static void choice(){
         System.out.println(" ____________________INFORMATION____________________");
         System.out.println("                                                    ");
-        System.out.println("     Student ID: "+ student.id[0]                    );
-        System.out.println("     Student Name: "+ student.name[0]                );
-        System.out.println("     Course: "+ student.course[0]                    );
+        System.out.println("     Student ID: "+ student.id.get(success));
+        System.out.println("     Student Name: "+ student.name.get(success));
+        System.out.println("     Course: "+ student.course.get(success));
         System.out.println("                                                    ");
-        System.out.println("     Total Fees: ₱"+ df.format(student.total_fees[0])           );
-        System.out.println("     Paid: ₱"+ df.format(student.already_paid[0])               );
+        System.out.println("     Total Fees: ₱"+ student.total_fees.get(success)           );
+        System.out.println("     Paid: ₱"+ student.already_paid.get(success)               );
         System.out.println("                                                    ");
         System.out.println(" ___________________________________________________");
         System.out.println(" ___________________________________________________");
@@ -85,7 +114,6 @@ public class Student_Financial_System{
                 choice();
                 break;
             case 4:
-                match = 1;
                 break;
             case 6:
                 match = 2;
@@ -100,12 +128,12 @@ public class Student_Financial_System{
 
     public static void balance(){
         char main_menu;
-        double balance = student.total_fees[0] - student.already_paid[0];
+        double balance = student.total_fees.get(success) - student.already_paid.get(success);
         System.out.println("You want to check Balance.");
-        System.out.println("Your Balance is ₱"+ df.format(balance));
+        System.out.println("Your Balance is ₱"+ balance +"\n");
 
         do{
-            System.out.print("\n\nDo you want to go back to main menu (y/n)? ");
+            System.out.print("Do you want to go back to main menu (y/n)? ");
             main_menu = pasok.next().charAt(0);
         }while(main_menu != 'y');
         System.out.print("\033[H\033[2J");
@@ -114,15 +142,15 @@ public class Student_Financial_System{
     }// end balance
 
     public static void pay(){
-        double money = 0;
+        int money = 0;
         char main_menu;
         System.out.println("You want to pay School Fees...");
         System.out.println("How much you want to pay? ");
         System.out.print("Input ammount: ₱ ");
-        money = pasok.nextDouble();
-        student.already_paid[0] += money;
-        double balance = student.total_fees[0] - student.already_paid[0];
-        System.out.println("Updated Balance: "+ df.format(balance) +"\n");
+        money = pasok.nextInt();
+        student.already_paid.set(success, student.already_paid.get(success)+money);
+        int balance = student.total_fees.get(success) - student.already_paid.get(success);
+        System.out.println("Updated Balance: "+ balance +"\n");
 
         do{
             System.out.print("Do you want to go back to main menu (y/n)? ");
@@ -133,7 +161,7 @@ public class Student_Financial_System{
     }
 
     public static void subject(){
-        if(student.course[0].equals("BSTM")){
+        if(student.course.get(success).equals("BSTM")){
             System.out.println("BSTM:");
             System.out.println("     First Semester:                            Second Semester: ");
             System.out.println("                    •PATH-F1                                    •PATH-F2 ");
@@ -144,7 +172,7 @@ public class Student_Financial_System{
             System.out.println("                    •JOSERIZ                                    •GEHISTO ");
             System.out.println("                    •FORLAN1                                    •GEWORLD ");
             System.out.println("                    •NSTP100                                    •FORLAN2 ");
-        }else if(student.course[0].equals("BSE")){
+        }else if(student.course.get(success).equals("BSE")){
             System.out.println("BSE:");
             System.out.println("     First Semester:                            Second Semester: ");
             System.out.println("                    •CPE-CP1                                    •GELIT01");
@@ -156,7 +184,7 @@ public class Student_Financial_System{
             System.out.println("                    •PATH-F1                                    •NSTP200");
             System.out.println("                                                                •PATH-F2");
             System.out.println("                                                                •CE-CAD1");
-        }else if(student.course[0].equals("BSP")){
+        }else if(student.course.get(success).equals("BSP")){
             System.out.println("BSP:");
             System.out.println("     First Semester:                            Second Semester: ");
             System.out.println("                    •GEFIL01                                    •GEFIL02");
@@ -167,7 +195,7 @@ public class Student_Financial_System{
             System.out.println("                    •INTPSYC                                    •GESCIE+");
             System.out.println("                                                                •PSYSTAT");
             System.out.println("                                                                •PATH-F2");   
-        }else if(student.course[0].equals("BSCS")){
+        }else if(student.course.get(success).equals("BSCS")){
             System.out.println("BSCS:");
             System.out.println("     First Semester:                            Second Semester: ");
             System.out.println("                    •GEMATH+                                    •NSTP200");
@@ -178,7 +206,7 @@ public class Student_Financial_System{
             System.out.println("                    •PATH-F1                                    •GEEMIND");
             System.out.println("                    •NSTP100                                    •GEWORLD");
             System.out.println("                                                                •ITECC03");
-        }else if(student.course[0].equals("BSEMC")){
+        }else if(student.course.get(success).equals("BSEMC")){
             System.out.println("BSEMC:");
             System.out.println("      First Semester:                            Second Semester: ");
             System.out.println("                     •GEMATH+                                    •NSTP200");
@@ -189,7 +217,7 @@ public class Student_Financial_System{
             System.out.println("                     •FREEHDD                                    •INTROGD");
             System.out.println("                     •PATH-F1                                    •GEWORLD");
             System.out.println("                     •NSTP100                                    •ITECC03");
-        }else if(student.course[0].equals("BSIT")){
+        }else if(student.course.get(success).equals("BSIT")){
             System.out.println("BSIT:");
             System.out.println("     First Semester:                            Second Semester: ");
             System.out.println("                    •GEMATH+                                    •NSTP200");
@@ -201,17 +229,20 @@ public class Student_Financial_System{
             System.out.println("                    •NSTP100                                    •GEWORLD");
             System.out.println("                                                                •ITECC03");
         }else{
-            System.out.println(student.course[0]+" is not available in the system....");
+            System.out.println(student.course.get(success)+" course is not available in the system....");
         }
         char main_menu;
+        System.out.println();
         do{
-            System.out.print("\n\nDo you want to go back to main menu (y/n)? ");
+            System.out.print("Do you want to go back to main menu (y/n)? ");
             main_menu = pasok.next().charAt(0);
         }while(main_menu != 'y');
         System.out.print("\033[H\033[2J");
     }// end subject
 
     public static void scholarship(){
+        // FIX SCHOLARSHIP
+        ArrayList<Integer> scholar = new ArrayList<>(student.non_school);
         System.out.println(" __________________________________________________");
         System.out.println("|                                                  |");
         System.out.println("|     Scholarships:                                |");
@@ -228,21 +259,20 @@ public class Student_Financial_System{
 
         System.out.print("What is  you scholarship?? ");
         int scan = pasok.nextInt();
-        student.s_scholarship[0] = scan;
-
-        if(student.s_scholarship[0] == 1){
+        scholar.set(success, scan);
+        System.out.print("\033[H\033[2J");
+        if(scholar.get(success) == 1){
             System.out.println("You have Jose Rizal Scholarship.");
             System.out.println("Jose Rizal: ");
             System.out.println("           •100% discount on tuition fees");
             System.out.println("           •100% discount on registration and miscellaneous fees");
             System.out.println("           •P2,500.00 stipend/month");
             System.out.println("           •P2,000.00 book allowance/semester");
+            student.tuition.set(success, student.tuition.get(success)-(student.tuition.get(success)*1));
+            student.misc_fee.set(success, student.misc_fee.get(success)-(student.misc_fee.get(success)*1));
+            student.total_fees.set(success, student.tuition.get(success) + student.misc_fee.get(success) + student.non_school.get(success));
 
-            student.tuition[0] -= student.tuition[0]*1;
-            student.misc_fee[0] -= student.misc_fee[0] * 1;
-            student.total_fees[0] = student.tuition[0] + student.misc_fee[0] + student.non_school[0];
-
-        }else if(student.s_scholarship[0] == 2){
+        }else if(scholar.get(success) == 2){
             System.out.println("You have Apolinario Mabini Scholarship.");
             System.out.println("Apolinario Mabini: ");
             System.out.println("                  •100% discount on tuition fees");
@@ -250,52 +280,60 @@ public class Student_Financial_System{
             System.out.println("                  •P1,000.00 stipend/month");
             System.out.println("                  •P1,000.00 book allowance/semester");
 
-            student.tuition[0] -= student.tuition[0]*1;
-            student.misc_fee[0] -= student.misc_fee[0] * 1;
-            student.total_fees[0] = student.tuition[0] + student.misc_fee[0] + student.non_school[0];
+            student.tuition.set(success, student.tuition.get(success)-(student.tuition.get(success)*1));
+            student.misc_fee.set(success, student.misc_fee.get(success)-(student.misc_fee.get(success)*1));
+            student.total_fees.set(success, student.tuition.get(success) + student.misc_fee.get(success) + student.non_school.get(success));
 
-        }else if(student.s_scholarship[0] == 3){
+        }else if(scholar.get(success) == 3){
             System.out.println("You have Emilio Aguinaldo Scholarship.");
             System.out.println("Emilio Aguinaldo: ");
             System.out.println("                 •100% discount on tuition fees");
             System.out.println("                 •100% discount on registration and miscellaneous fees");
 
-            student.tuition[0] -= student.tuition[0]*1;
-            student.misc_fee[0] -= student.misc_fee[0] * 1;
-            student.total_fees[0] = student.tuition[0] + student.misc_fee[0] + student.non_school[0];
+            student.tuition.set(success, student.tuition.get(success)-(student.tuition.get(success)*1));
+            student.misc_fee.set(success, student.misc_fee.get(success)-(student.misc_fee.get(success)*1));
+            student.total_fees.set(success, student.tuition.get(success) + student.misc_fee.get(success) + student.non_school.get(success));
 
-        }else if(student.s_scholarship[0] == 4){
+        }else if(scholar.get(success) == 4){
             System.out.println("You have Manuel Quezon Scholarship.");
             System.out.println("Manuel Quezon: ");
             System.out.println("              •100% discount on tuition fees");
             System.out.println("              •50% discount on registration and miscellaneous fees");
             
-            student.tuition[0] -= student.tuition[0]*1;
-            student.misc_fee[0] -= student.misc_fee[0] * 0.5;
-            student.total_fees[0] = student.tuition[0] + student.misc_fee[0] + student.non_school[0];
+            double new_misc_fee = student.misc_fee.get(success)-(student.misc_fee.get(success)*0.5);
+            int converted = (int) new_misc_fee;
             
-        }else if(student.s_scholarship[0] == 6){
+            student.tuition.set(success, student.tuition.get(success)-(student.tuition.get(success)*1));
+            student.misc_fee.set(success, converted);
+            student.total_fees.set(success, student.tuition.get(success) + student.misc_fee.get(success) + student.non_school.get(success));
+            
+        }else if(scholar.get(success) == 6){
             System.out.println("You have 50TAG Scholarship.");
             System.out.println("50TAG: ");
             System.out.println("      •50% discount on tuition fees"); 
 
-            student.tuition[0] -= student.tuition[0]*0.5;
-            student.total_fees[0] = student.tuition[0] + student.misc_fee[0] + student.non_school[0];
+            double new_misc_fee = student.tuition.get(success)-(student.tuition.get(success)*0.5);
+            int converted = (int) new_misc_fee;
             
-        }else if(student.s_scholarship[0] == 5){
+            student.tuition.set(success, converted);
+            student.total_fees.set(success, student.tuition.get(success) + student.misc_fee.get(success) + student.non_school.get(success));
+            
+        }else if(scholar.get(success) == 5){
             System.out.println("You have 100TAG Scholarship.");
             System.out.println("100TAG: ");
             System.out.println("      •100% discount on tuition fees");
 
-            student.tuition[0] -= student.tuition[0]*1;
-            student.total_fees[0] = student.tuition[0] + student.misc_fee[0] + student.non_school[0];
+            student.tuition.set(success, student.tuition.get(success)-(student.tuition.get(success)*1));
+            student.total_fees.set(success, student.tuition.get(success) + student.misc_fee.get(success) + student.non_school.get(success));
             
-        }else if(student.s_scholarship[0] == 7){
+        }else if(scholar.get(success) == 7){
             System.out.println("You do not have any Scholarships...");
+            
         }
         char main_menu;
+        System.out.println();
         do{
-            System.out.print("\n\nDo you want to go back to main menu (y/n)? ");
+            System.out.print("Do you want to go back to main menu (y/n)? ");
             main_menu = pasok.next().charAt(0);
         }while(main_menu != 'y');
         System.out.print("\033[H\033[2J");
@@ -306,16 +344,36 @@ public class Student_Financial_System{
 
         balik:
         while(true){
-            match = 0;
-            info();
-            choice();
-    
-            if(match == 1){
-                continue balik;
-            }else if(match == 2){
+
+            System.out.println(" __________________________________________________");
+            System.out.println("|                                                  |");
+            System.out.println("|     HELLO STUDENT!                               |");
+            System.out.println("|                                                  |");
+            System.out.println("|     1. Register an account                       |");
+            System.out.println("|     2. LogIn an account                          |");
+            System.out.println("|                                                  |");
+            System.out.println("|                                                  |");
+            System.out.println("|__________________________________________________|");
+            System.out.print("What do you want to do?? ");
+            int choice = pasok.nextInt();
+            pasok.nextLine();
+            switch(choice){
+                case 1:
+                    System.out.print("\033[H\033[2J"); 
+                    register();
+                    break;
+                case 2:
+                    System.out.print("\033[H\033[2J");
+                    login();
+                    break;
+                default:
+                    System.out.println("Incorrect choice");
+                    System.out.print("\033[H\033[2J");
+            }
+
+            if(match == 2){
                 break balik;
             }
-                
                     
         }//end while
 
@@ -323,14 +381,13 @@ public class Student_Financial_System{
 }// end public class
 
 class financial{
-    public String[] id = new String[1];
-    public String[] name = new String[1];
-    public String[] course = new String[1];
-    public int[] s_scholarship = new int[1];
-    public double[] tuition = new double[1];
-    public double[] misc_fee = new double[1];
-    public double[] non_school = new double[1];
-    public double[] total_fees = new double[1];
-    public double[] already_paid = new double[1];
-    
+    public ArrayList<String> id = new ArrayList<>();
+    public ArrayList<String> name = new ArrayList<>();
+    public ArrayList<String> course = new ArrayList<>();
+    public ArrayList<Integer> tuition = new ArrayList<>();
+    public ArrayList<Integer> misc_fee = new ArrayList<>();
+    public ArrayList<Integer> non_school = new ArrayList<>();
+    public ArrayList<Integer> total_fees = new ArrayList<>();
+    public ArrayList<Integer> already_paid = new ArrayList<>();
+    public Stack<Integer> s_scholarship = new Stack<>();
 }// end financial
